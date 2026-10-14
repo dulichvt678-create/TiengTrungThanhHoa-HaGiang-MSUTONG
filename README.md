@@ -2,6 +2,8 @@
 
 Web học tiếng Trung tĩnh (HTML/CSS/JS thuần, không cần build) cho khoá Msutong 1 và Msutong 2.
 
+Bản **tiếng Đài Loan** (chữ phồn thể, 15 bài) nằm trong thư mục [`dai-loan/`](dai-loan/README.md) và đưa lên mạng riêng.
+
 ## Đưa lên mạng
 Kéo cả thư mục này thả vào https://app.netlify.com/drop là xong.
 
