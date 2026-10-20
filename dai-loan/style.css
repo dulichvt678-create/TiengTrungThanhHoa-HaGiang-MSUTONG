@@ -1,6 +1,6 @@
 /* Layout: thanh điều hướng dính trên cùng, nội dung một cột rộng tối đa 1120px, lưới thẻ tự xuống dòng.
    Màu: giấy hơi ngả ngọc, mực đen, đỏ son (con dấu) làm điểm nhấn, xanh ngọc phụ. 4 màu thanh điệu cho pinyin.
-   Bản tiếng Đài Loan: font chữ phồn thể (TC) và kiểu chữ Chú âm (.zy). */
+   Bản tiếng Đài Loan: font chữ phồn thể (TC). */
 :root {
   --paper: #f5f7f5;
   --card: #ffffff;
@@ -265,9 +265,6 @@ footer { border-top: 1px solid var(--line); }
   max-width: calc(100% - 32px);
 }
 
-/* Chú âm (注音) và từ loại */
-.zy { font-family: var(--f-han-sans); font-weight: 400; color: var(--muted); font-size: .82em; letter-spacing: .04em; line-height: 1.4; }
-.word .zy { font-size: .78rem; }
-.hero-word .zy, .fc-face .zy { font-size: 1.05rem; }
+/* Từ loại */
 .pos { display: inline-block; font-size: .7rem; font-weight: 700; padding: 0 7px; border-radius: 999px; border: 1px solid var(--line); color: var(--muted); vertical-align: 1px; }
 .han [class^="tone"] { font-family: var(--f-body); }

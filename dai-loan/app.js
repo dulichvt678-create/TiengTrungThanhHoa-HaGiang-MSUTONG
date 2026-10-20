@@ -88,30 +88,6 @@
   }
   const TONE_NAMES = { 0: "nhẹ", 1: "1", 2: "2", 3: "3", 4: "4" };
 
-  /* ---------- Chú âm (注音符號), đổi từ pinyin ---------- */
-  const ZY_I = { b: "ㄅ", p: "ㄆ", m: "ㄇ", f: "ㄈ", d: "ㄉ", t: "ㄊ", n: "ㄋ", l: "ㄌ", g: "ㄍ", k: "ㄎ", h: "ㄏ", j: "ㄐ", q: "ㄑ", x: "ㄒ", zh: "ㄓ", ch: "ㄔ", sh: "ㄕ", r: "ㄖ", z: "ㄗ", c: "ㄘ", s: "ㄙ" };
-  const ZY_F = {
-    a: "ㄚ", o: "ㄛ", e: "ㄜ", ai: "ㄞ", ei: "ㄟ", ao: "ㄠ", ou: "ㄡ", an: "ㄢ", en: "ㄣ", ang: "ㄤ", eng: "ㄥ", ong: "ㄨㄥ", er: "ㄦ",
-    i: "ㄧ", ia: "ㄧㄚ", ie: "ㄧㄝ", iao: "ㄧㄠ", iu: "ㄧㄡ", iou: "ㄧㄡ", ian: "ㄧㄢ", in: "ㄧㄣ", iang: "ㄧㄤ", ing: "ㄧㄥ", iong: "ㄩㄥ",
-    u: "ㄨ", ua: "ㄨㄚ", uo: "ㄨㄛ", uai: "ㄨㄞ", ui: "ㄨㄟ", uei: "ㄨㄟ", uan: "ㄨㄢ", un: "ㄨㄣ", uen: "ㄨㄣ", uang: "ㄨㄤ", ueng: "ㄨㄥ",
-    "ü": "ㄩ", "üe": "ㄩㄝ", "üan": "ㄩㄢ", "ün": "ㄩㄣ"
-  };
-  const ZY_TONE = { 0: "", 1: "", 2: "ˊ", 3: "ˇ", 4: "ˋ" };
-  function zhuyinSyl(syl) {
-    const t = toneOf(syl);
-    let s = bare(syl).toLowerCase().replace(/v/g, "ü"), er = "";
-    if (s.length > 2 && s.endsWith("r")) { er = "ㄦ"; s = s.slice(0, -1); } // nhi hoá: nǎr, zhèr
-    s = s.replace(/^yu/, "ü").replace(/^yi/, "i").replace(/^y/, "i").replace(/^wu/, "u").replace(/^w/, "u");
-    const m = s.match(/^(zh|ch|sh|[bpmfdtnlgkhjqxrzcs])/);
-    const ini = m ? m[1] : "";
-    s = s.slice(ini.length);
-    if (/^[jqx]$/.test(ini) && s[0] === "u") s = "ü" + s.slice(1);
-    const fin = /^(zh|ch|sh|r|z|c|s)$/.test(ini) && s === "i" ? "" : ZY_F[s];
-    if (fin == null) return syl;
-    return (t === 0 ? "˙" : "") + (ZY_I[ini] || "") + fin + ZY_TONE[t] + er;
-  }
-  const zhuyin = (p) => syls(p).map(zhuyinSyl).join(" ");
-
   /* ---------- Đọc to (Web Speech) ---------- */
   let zhVoice = null;
   function loadVoices() {
@@ -196,7 +172,7 @@
           <div class="page-head" style="gap:16px">
             <div class="eyebrow">Học tiếng Đài Loan từ con số 0 · 繁體字</div>
             <h1>Tiếng Trung <span>Thanh Hoa-Hà Giang</span> - tiếng Đài Loan</h1>
-            <p class="lead">${COURSES[0].lessons.length} bài, ${TOTAL} từ chữ phồn thể theo giáo trình tiếng Trung (Đài Loan) cơ bản của trung tâm. Lật flashcard để nhớ lâu, luyện tai phân biệt thanh điệu và pinyin, xem Chú âm ㄅㄆㄇㄈ, rồi tự kiểm tra từng bài.</p>
+            <p class="lead">${COURSES[0].lessons.length} bài, ${TOTAL} từ chữ phồn thể theo giáo trình tiếng Trung (Đài Loan) cơ bản của trung tâm. Lật flashcard để nhớ lâu, luyện tai phân biệt thanh điệu và pinyin, rồi tự kiểm tra từng bài.</p>
             <div class="row">
               <a class="btn primary" href="#khoa-hoc">Bắt đầu học</a>
               <a class="btn" href="#phat-am">Luyện phát âm</a>
@@ -211,7 +187,6 @@
             <div class="eyebrow">Từ của hôm nay</div>
             <div class="big">${esc(w.h)}</div>
             <div class="py">${colorPy(w.p)}</div>
-            <div class="zy">${zhuyin(w.p)}</div>
             <div>${esc(w.v)}</div>
             <div class="row" style="justify-content:center;margin-top:6px">
               <button class="btn small dark" data-say="${esc(w.h)}">${ICON_SPK.replace("<svg", '<svg width="16" height="16"')} Nghe đọc</button>
@@ -225,7 +200,7 @@
           <div class="grid" style="grid-template-columns:repeat(auto-fit,minmax(190px,1fr))">
             ${feature("#khoa-hoc", "Khoá tiếng Đài Loan", `${COURSES[0].lessons.length} bài, ${TOTAL} từ, ngữ pháp, hội thoại có pinyin và nghĩa tiếng Việt.`, "課程")}
             ${feature("#flashcard", "Flashcard ghi nhớ", "Lật thẻ, chấm “nhớ / chưa nhớ”, máy tự đưa từ khó lên trước.", "卡片")}
-            ${feature("#phat-am", "Phát âm và pinyin", "Nghe 4 thanh, phân biệt zh/z, an/ang, u/ü…, bảng Chú âm, luyện nói với micro.", "發音")}
+            ${feature("#phat-am", "Phát âm và pinyin", "Nghe 4 thanh, phân biệt zh/z, an/ang, u/ü…, luyện nói với micro.", "發音")}
             ${feature("#thi", "Kiểm tra", "Thi nhớ từ, nghe, thanh điệu và thi nói theo từng bài.", "考試")}
             ${feature("#tra-tu", "Tra từ và tiến độ", "Tìm nhanh từ theo chữ phồn thể, pinyin hoặc nghĩa; xem bài nào đã thuộc.", "詞典")}
           </div>
@@ -295,10 +270,10 @@
       <div class="row"><a class="btn small" href="#khoa-hoc" data-jump="mo-dau">Bài mở đầu</a><a class="btn small" href="#khoa-hoc" data-jump="${c.key}">15 bài học</a><a class="btn small" href="#khoa-hoc" data-jump="bo-thu">Bộ thủ</a></div></div>
 
       <section class="panel" id="kh-mo-dau"><h2>Bài mở đầu: Ngữ âm và chữ phồn thể</h2>
-        <p>Tiếng phổ thông dùng ở Đài Loan có 21 thanh mẫu và 6 nguyên âm đơn (a, o, e, i, u, ü). Ở Đài Loan, người học truyền thống dùng <b>Chú âm</b> <span class="han">注音符號 ㄅㄆㄇㄈ</span> song song với <b>pinyin</b>; trang này lấy pinyin làm chính và ghi Chú âm bên dưới mỗi từ.</p>
+        <p>Tiếng phổ thông dùng ở Đài Loan có 21 thanh mẫu và 6 nguyên âm đơn (a, o, e, i, u, ü). Trang này dùng <b>pinyin</b> để ghi cách đọc, tô màu theo thanh điệu.</p>
         <div class="note jade">Hai âm tiết thanh 3 đứng liền nhau thì âm đầu đọc thành thanh 2: <span class="han">你好</span> nǐ hǎo đọc thành ní hǎo.</div>
         <p>Chữ phồn thể giữ trọn nét gốc: <span class="han">語</span> (thay vì 语), <span class="han">漢</span> (thay vì 汉), <span class="han">這</span> (thay vì 这). Nguyên tắc viết: trái trước phải sau, trên trước dưới sau, ngoài trước trong sau, ngang trước sổ sau.</p>
-        <div class="row"><a class="btn small primary" href="#phat-am" id="kh-pa">Luyện bốn thanh điệu</a><a class="btn small" href="#phat-am" id="kh-bang">Bảng thanh mẫu · vận mẫu · Chú âm</a></div>
+        <div class="row"><a class="btn small primary" href="#phat-am" id="kh-pa">Luyện bốn thanh điệu</a><a class="btn small" href="#phat-am" id="kh-bang">Bảng thanh mẫu · vận mẫu</a></div>
       </section>
 
       <section class="page" style="gap:14px" id="kh-${c.key}"><h2>${c.lessons.length} bài học <span class="han meta">${c.book}</span></h2>
@@ -372,7 +347,7 @@
   }
   COURSES.forEach((c) => (routes[c.route] = lessonPage(c)));
   function wordRow(w) {
-    return `<div class="word"><div class="h">${esc(w.h)}</div><div class="info"><div class="p">${colorPy(w.p)}</div><div class="zy">${zhuyin(w.p)}</div><div class="v">${w.t ? `<span class="pos">${esc(w.t)}</span> ` : ""}${esc(w.v)}</div></div>${spkBtn(w.h)}</div>`;
+    return `<div class="word"><div class="h">${esc(w.h)}</div><div class="info"><div class="p">${colorPy(w.p)}</div><div class="v">${w.t ? `<span class="pos">${esc(w.t)}</span> ` : ""}${esc(w.v)}</div></div>${spkBtn(w.h)}</div>`;
   }
 
   /* ---------- Chọn bộ từ (dùng chung cho flashcard, phát âm và thi) ---------- */
@@ -455,7 +430,7 @@
         <button class="fc" id="fc" aria-label="Lật thẻ">
           <div class="fc-in">
             <div class="fc-face">${front}<div class="hint">Chạm để lật</div></div>
-            <div class="fc-face back"><div class="big">${esc(cur.h)}</div><div class="py">${colorPy(cur.p)}</div><div class="zy">${zhuyin(cur.p)}</div><div class="vi">${esc(cur.v)}</div></div>
+            <div class="fc-face back"><div class="big">${esc(cur.h)}</div><div class="py">${colorPy(cur.p)}</div><div class="vi">${esc(cur.v)}</div></div>
           </div>
         </button>
         <div class="row" style="justify-content:center">
@@ -478,7 +453,7 @@
 
   /* ---------- Phát âm ---------- */
   routes["phat-am"] = (root) => {
-    const tabs = [["thanh", "Bốn thanh điệu"], ["phan-biet", "Phân biệt pinyin"], ["theo-bai", "Pinyin theo bài"], ["ket-hop", "Kết hợp thanh"], ["bang", "Bảng thanh mẫu · vận mẫu · Chú âm"], ["noi", "Luyện nói"]];
+    const tabs = [["thanh", "Bốn thanh điệu"], ["phan-biet", "Phân biệt pinyin"], ["theo-bai", "Pinyin theo bài"], ["ket-hop", "Kết hợp thanh"], ["bang", "Bảng thanh mẫu · vận mẫu"], ["noi", "Luyện nói"]];
     const active = store.get("paTab", "thanh");
     root.innerHTML = `<div class="page">
       <div class="page-head"><div class="eyebrow">發音練習</div><h1>Luyện phát âm và pinyin</h1>
@@ -590,17 +565,9 @@
     const P = window.PINYIN;
     pa.innerHTML = `<div class="page">
       <div class="panel"><h3>Thanh mẫu (21)</h3><p class="meta">Bấm vào ô để nghe chữ mẫu. Mẹo đọc so với âm tiếng Việt chỉ là gần đúng.</p>
-        <div class="chip-grid">${P.initials.map(([k, h, p, tip]) => `<button class="chip" data-say="${h}"><b>${k} <span class="zy">${ZY_I[k]}</span></b><span class="han">${h} <span class="tone${toneOf(p)}">${p}</span></span><small>${esc(tip)}</small></button>`).join("")}</div></div>
+        <div class="chip-grid">${P.initials.map(([k, h, p, tip]) => `<button class="chip" data-say="${h}"><b>${k}</b><span class="han">${h} <span class="tone${toneOf(p)}">${p}</span></span><small>${esc(tip)}</small></button>`).join("")}</div></div>
       <div class="panel"><h3>Vận mẫu (${P.finals.length})</h3>
-        <div class="chip-grid">${P.finals.map(([k, h, p]) => `<button class="chip" data-say="${h}"><b>${k} <span class="zy">${ZY_F[k]}</span></b><span class="han">${h} <span class="tone${toneOf(p)}">${p}</span></span></button>`).join("")}</div></div>
-      <div class="panel"><h3>Dấu thanh trong Chú âm</h3><p class="meta">Chú âm không ghi dấu cho thanh 1; thanh nhẹ đặt dấu chấm ở đầu.</p>
-        <div class="table-wrap"><table><thead><tr><th>Thanh</th><th>Pinyin</th><th>Chú âm</th></tr></thead><tbody>
-          <tr><td class="tone1">Thanh 1</td><td>mā <span class="han">媽</span></td><td class="zy">ㄇㄚ</td></tr>
-          <tr><td class="tone2">Thanh 2</td><td>má <span class="han">麻</span></td><td class="zy">ㄇㄚˊ</td></tr>
-          <tr><td class="tone3">Thanh 3</td><td>mǎ <span class="han">馬</span></td><td class="zy">ㄇㄚˇ</td></tr>
-          <tr><td class="tone4">Thanh 4</td><td>mà <span class="han">罵</span></td><td class="zy">ㄇㄚˋ</td></tr>
-          <tr><td class="tone0">Thanh nhẹ</td><td>ma <span class="han">嗎</span></td><td class="zy">˙ㄇㄚ</td></tr>
-        </tbody></table></div></div>
+        <div class="chip-grid">${P.finals.map(([k, h, p]) => `<button class="chip" data-say="${h}"><b>${k}</b><span class="han">${h} <span class="tone${toneOf(p)}">${p}</span></span></button>`).join("")}</div></div>
       <div class="panel"><h3>Quy tắc viết dễ nhầm</h3>
         <div class="table-wrap"><table><thead><tr><th>Quy tắc</th><th>Ví dụ</th></tr></thead><tbody>
           <tr><td>j, q, x, y + ü thì bỏ hai chấm</td><td>ju (居), qu (去), xu (需), yu (魚): vẫn đọc là ü</td></tr>
