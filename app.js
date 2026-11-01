@@ -202,6 +202,7 @@
             ${feature("#flashcard", "Flashcard ghi nhớ", "Lật thẻ, chấm “nhớ / chưa nhớ”, máy tự đưa từ khó lên trước.", "卡片")}
             ${feature("#phat-am", "Phát âm và pinyin", "Nghe 4 thanh, phân biệt zh/z, an/ang, u/ü…, luyện nói với micro.", "发音")}
             ${feature("#thi", "Kiểm tra", "Thi nhớ từ, nghe, thanh điệu và thi nói theo từng bài.", "考试")}
+            ${feature("hsk3.html", "Luyện và thi nói HSK 3", "Đối thoại, đặt câu, nói theo chủ đề trong 3–4 phút, máy chấm điểm ngay.", "口语")}
             ${feature("#tra-tu", "Tra từ và tiến độ", "Tìm nhanh từ theo chữ Hán, pinyin hoặc nghĩa; xem bài nào đã thuộc.", "词典")}
           </div>
         </section>
