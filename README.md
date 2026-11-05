@@ -1,26 +1,45 @@
-# Tiếng Trung Thanh Hoa-Hà Giang - Msutong
+# Thi nói tiếng Trung · Tiếng Trung Thanh Hoa-Hà Giang
 
-Web học tiếng Trung tĩnh (HTML/CSS/JS thuần, không cần build) cho khoá Msutong 1 và Msutong 2.
+App thi nói tiếng Trung trình độ tương đương **HSK 1**, theo giáo trình **汉语初级强化教程 · 听说课本 I** (Intensive Elementary Chinese Course · Listening and Speaking I, 肖奚强、朱敏 主编, NXB Đại học Bắc Kinh), bài 1–12. Web tĩnh (HTML/CSS/JS thuần, không cần build).
 
 ## Đưa lên mạng
-Kéo cả thư mục này thả vào https://app.netlify.com/drop là xong.
+Kéo cả thư mục này (hoặc file zip có `index.html` nằm ngay ở gốc) thả vào https://app.netlify.com/drop.
 
-## Sửa nội dung
-- `data/msutong1.js`: từ vựng 10 bài lấy theo bảng 生词表 cuối sách 速通汉语 初级 1 (chữ Hán, pinyin, số bài). Nghĩa tiếng Việt, tên chủ đề và câu ví dụ do trung tâm tự viết. Phần `names` là tên riêng (địa danh, họ).
-- `data/msutong2.js`: từ vựng 10 bài của sách 速通汉语 初级 2, cùng cách làm như trên.
-- Trang "Tra từ" tìm từ theo chữ Hán, pinyin hoặc nghĩa trong cả hai khoá và hiện tiến độ từng bài.
-- `data/pinyin.js`: chữ mẫu luyện thanh điệu, cặp âm dễ nhầm, bảng thanh mẫu/vận mẫu.
-- `data/hsk3-noi.js`: đề luyện nói HSK 3 (8 chủ đề đối thoại × 5 câu hỏi, 30 cấu trúc đặt câu, 12 chủ đề nói, kèm câu/bài mẫu). Thêm đề mới bằng cách chép một mục có sẵn rồi sửa.
+## Bài thi
+**4 phần, mỗi phần 25 điểm, tổng 100 điểm:**
 
-## Luyện và thi nói HSK 3 (`hsk3.html`)
-- **Thi thử**: 3 phần liền nhau — Đối thoại (对话, 30 điểm), Đặt câu (造句, 30 điểm), Nói theo chủ đề (话题表达, 40 điểm). Chọn tổng thời gian nói **3 phút** (4 câu + 4 câu + chủ đề ≥ 60 giây) hoặc **4 phút** (5 + 5 + chủ đề ≥ 90 giây). Thời gian chuẩn bị không tính; thời gian còn dư được cộng cho phần chủ đề. Máy tự đọc câu hỏi, đếm giờ chuẩn bị và tự bật micro. Đạt từ 60/100.
-- **Luyện từng phần**: tự bấm micro, xem điểm ngay sau mỗi câu, nói lại được.
-- **Chấm điểm** theo chữ trình duyệt nghe được, 5 tiêu chí: nội dung, ngữ pháp/mạch lạc, từ vựng (có cộng từ HSK 3), độ dài/lưu loát (chữ/phút), độ rõ phát âm (độ tin cậy nhận dạng). Mỗi câu có nhận xét lỗi, câu mẫu đọc to và bản ghi âm để nghe lại. Điểm chỉ để tham khảo khi tự luyện.
-- Trình duyệt không nhận được giọng nói thì vẫn gõ chữ Hán để chấm thử (không chấm phát âm).
+| Phần | Cách thi |
+|---|---|
+| 1. Đọc từ và câu 认读词语和句子 | Đọc to từng từ (tối đa 6 giây/từ), sau đó đọc từng câu (tối đa 12 giây/câu) |
+| 2. Đặt câu 造句 | 5 giây suy nghĩ, nói một câu có dùng từ cho sẵn (tối đa 20 giây) |
+| 3. Nói theo chủ đề 话题表达 | Chuẩn bị 20–30 giây với câu gợi ý, rồi nói liên tục |
+| 4. Trả lời câu hỏi theo phản xạ 快速问答 | Giám khảo hỏi, trả lời ngay, không có thời gian chuẩn bị (tối đa 10 giây/câu) |
 
-Mỗi dòng từ vựng: `chữ Hán|pinyin cách âm tiết|nghĩa`, ví dụ `老师|lǎo shī|thầy giáo, cô giáo`.
+**2 kiểu thi:**
+- **Thi thường xuyên**: chọn một bài (第1课 … 第12课). Đề lấy từ bài đó, thiếu thì lấy thêm bài trước. Bài ôn tập 第5课, 第10课 lấy đề của các bài được ôn.
+- **Thi định kỳ**: Định kỳ 1 (bài 1–5), Định kỳ 2 (bài 6–10), Cuối kỳ (bài 1–12) hoặc tự chọn khoảng bài. Câu đọc dài hơn, độ dài bài nói yêu cầu cao hơn.
+
+**Thời gian:** 2 phút hoặc 3 phút cho mỗi phần, hoặc cả bài 2 phút / 3 phút (chia đều cho 4 phần). Hết thời gian của phần, các câu còn lại tính 0 điểm.
+
+Xếp loại: Xuất sắc ≥ 90 · Giỏi ≥ 80 · Khá ≥ 65 · Trung bình ≥ 50 · Chưa đạt < 50. Thi xong có phiếu kết quả (họ tên, lớp, đề số, điểm từng phần, quy đổi thang 10) in hoặc lưu PDF được, kèm nhận xét từng câu, câu mẫu và bản ghi âm.
+
+## Sửa đề
+Toàn bộ đề nằm trong `data/de-thi.js`, chia theo 12 bài (tên bài theo mục lục sách):
+- `words`: từ cho phần Đọc từ, mỗi dòng `chữ Hán|pin yin cách âm tiết|nghĩa`, ví dụ `老师|lǎo shī|thầy giáo`.
+- `make`: từ cho phần Đặt câu, kèm câu mẫu (câu mẫu cũng dùng cho phần Đọc câu).
+- `qa`: câu hỏi phản xạ và các từ khoá câu trả lời nên có.
+- `read`: đoạn văn ngắn của bài, được tách thành từng câu cho phần Đọc câu.
+- `topics`: chủ đề nói, `from` = học xong bài nào thì dùng được.
+
+Từ vựng hiện tại do trung tâm soạn theo chủ đề từng bài; muốn khớp đúng bảng 生词 của sách thì sửa `words` của bài đó.
+
+## Các file
+- `index.html`, `style.css`, `noi.css`: giao diện.
+- `thi-noi.js`: tạo đề, luồng thi, chấm điểm, phiếu kết quả.
+- `noi-core.js`: đọc to (giọng tiếng Trung của trình duyệt), nhận giọng nói, ghi âm.
+- `data/de-thi.js`: đề thi.
 
 ## Ghi chú
-- Đọc to dùng giọng tiếng Trung có sẵn của trình duyệt; nếu máy chưa có giọng zh-CN thì cài thêm trong cài đặt ngôn ngữ của hệ điều hành.
-- Thi nói/luyện nói cần Chrome hoặc Edge và cho phép micro, trang phải chạy qua https (Netlify có sẵn).
-- Tiến độ flashcard, điểm thi và bộ từ tự nhập được lưu trên trình duyệt của từng người học (tách riêng với site HSK 1 cũ).
+- Cần **Chrome hoặc Edge**, cho phép micro, trang chạy qua https (Netlify có sẵn).
+- Điểm do máy chấm dựa trên chữ trình duyệt nghe được, chỉ để tham khảo; giáo viên nên nghe lại bản ghi âm khi cần.
+- Lịch sử điểm lưu trên trình duyệt của từng máy.

@@ -1,4 +1,4 @@
-/* Trang luyện và thi nói HSK 3: dùng chung biến màu của style.css */
+/* Giao diện phòng thi nói: dùng chung biến màu của style.css */
 [hidden] { display: none !important; }
 #app .tag { justify-self: start; }
 #app .card label.field, #app .card select { min-width: 0; width: 100%; }
@@ -73,3 +73,43 @@
 .hk-parts { display: grid; gap: 12px; }
 .hk-part { display: grid; gap: 6px; }
 .hk-result .note ul { margin: 6px 0 0; padding-left: 20px; }
+
+.hk-seg-big button { padding: 10px 20px; font-size: 1rem; }
+.ms-read { font-size: clamp(1.4rem, 5vw, 2rem); line-height: 1.8; text-align: left; max-width: 620px; }
+.ms-read-py { text-align: left; max-width: 620px; }
+.ms-read-r { font-size: 1.25rem; line-height: 1.9; }
+.ms-ok { color: var(--ok); }
+.ms-miss { color: var(--bad); text-decoration: underline wavy; text-underline-offset: 4px; }
+.ms-words { display: grid; gap: 8px; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); margin-top: 8px; }
+.ms-words .chip b { font-weight: 400; }
+
+@media print {
+  .topbar, footer, .hk-noprint, .hk-item audio, .spk { display: none !important; }
+  body { background: #fff; color: #000; }
+  main { padding: 0; }
+  .panel, .hk-item { break-inside: avoid; border-color: #bbb; }
+  .hk-item summary::after { content: none; }
+}
+
+/* Phòng thi, phiếu điểm */
+.ms-gate { text-align: left; }
+.ms-rules { margin: 0; padding-left: 20px; display: grid; gap: 6px; }
+.ms-count { font-size: 4rem; font-weight: 800; color: var(--cinnabar); text-align: center; min-height: 1.2em; line-height: 1.2; font-variant-numeric: tabular-nums; }
+.ms-count:empty { min-height: 0; }
+.hk-opts summary { cursor: pointer; font-weight: 700; color: var(--jade); }
+.hk-opts[open] summary { margin-bottom: 10px; }
+.ms-sheet-head { display: flex; justify-content: space-between; align-items: flex-start; gap: 16px; flex-wrap: wrap; }
+.ms-sheet-head h1 { font-size: clamp(3rem, 10vw, 4.4rem); color: var(--cinnabar); line-height: 1; font-variant-numeric: tabular-nums; }
+.ms-sheet-head h1 small { font-size: 1.1rem; color: var(--muted); font-weight: 600; margin-left: 6px; }
+.ms-level { font-size: 1.1rem; padding: 6px 16px; }
+.ms-info { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 10px 20px; margin: 0; }
+.ms-info div { border-bottom: 1px solid var(--line); padding-bottom: 6px; min-width: 0; }
+.ms-info dt { font-size: .75rem; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; color: var(--muted); }
+.ms-info dd { margin: 0; overflow-wrap: anywhere; }
+.ms-scores .han { display: block; font-size: .85rem; }
+@media (max-width: 560px) { .ms-scores th:nth-child(4), .ms-scores td:nth-child(4) { display: none; } .ms-scores td, .ms-scores th { padding: 8px 6px; } }
+.ms-sign { display: none; }
+@media print {
+  .ms-sign { display: flex; justify-content: space-around; text-align: center; margin-top: 24px; min-height: 110px; }
+  .ms-sheet { break-after: page; }
+}
