@@ -84,6 +84,7 @@ h3 { font-size: 1.25rem; font-weight: 700; }
 .nav a { text-decoration: none; color: var(--muted); font-weight: 500; padding: 8px 12px; border-radius: 10px; }
 .nav a:hover { color: var(--ink); background: var(--card2); }
 .nav a.on { color: var(--blue); font-weight: 700; }
+.theme-btn { color: var(--ink); }
 .grade-switch { display: flex; align-items: center; gap: 8px; border: 1px solid var(--line); border-radius: 14px; padding: 4px; background: var(--card); }
 .grade-switch a { text-decoration: none; font-weight: 700; color: var(--muted); padding: 6px 12px; border-radius: 10px; }
 .grade-switch a.on { background: var(--blue); color: #fff; }

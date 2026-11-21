@@ -39,6 +39,8 @@
     mic: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><rect x="9" y="3" width="6" height="11" rx="3" fill="currentColor"/><path d="M5 11a7 7 0 0 0 14 0M12 18v3"/></svg>',
     star: '<svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="m12 2.5 2.9 6 6.6.9-4.8 4.6 1.2 6.5L12 17.4l-5.9 3.1 1.2-6.5L2.5 9.4l6.6-.9z"/></svg>',
     check: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12.5 4.5 4.5L19 7.5"/></svg>',
+    sun: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="4.5" fill="currentColor"/><path d="M12 2v2.5M12 19.5V22M2 12h2.5M19.5 12H22M4.9 4.9l1.8 1.8M17.3 17.3l1.8 1.8M4.9 19.1l1.8-1.8M17.3 6.7l1.8-1.8"/></svg>',
+    moon: '<svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M20 14.5A8.5 8.5 0 0 1 9.5 4a8.5 8.5 0 1 0 10.5 10.5z"/></svg>',
     clock: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="13" r="8"/><path d="M12 9v4l2.5 2M9.5 2.5h5"/></svg>'
   };
   const ILL = {
@@ -48,6 +50,16 @@
   };
   const spkBtn = (text, big) => `<button type="button" class="icon-btn${big ? " big" : ""}" data-say="${esc(text)}" aria-label="Nghe đọc" title="Nghe đọc">${I.spk}</button>`;
   const starsHTML = (n) => `<span class="stars" aria-label="${n} sao">${"<i>★</i>".repeat(n)}${"★".repeat(3 - n)}</span>`;
+
+  /* ---------- Giao diện sáng / tối (mặc định sáng) ---------- */
+  const themePref = () => { const t = store.get("theme", "light"); return ["light", "dark", "auto"].includes(t) ? t : "light"; };
+  const isDark = () => { const t = themePref(); return t === "dark" || (t === "auto" && window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches); };
+  function applyTheme() {
+    const t = themePref();
+    if (t === "auto") document.documentElement.removeAttribute("data-theme"); else document.documentElement.setAttribute("data-theme", t);
+    const b = document.getElementById("theme-btn");
+    if (b) { const dark = isDark(); b.innerHTML = dark ? I.sun : I.moon; b.title = dark ? "Chuyển sang nền sáng" : "Chuyển sang nền tối"; b.setAttribute("aria-label", b.title); }
+  }
 
   /* ---------- Giọng đọc (đọc to bằng giọng có sẵn của trình duyệt) ---------- */
   const TTS = { voices: [] };
@@ -648,6 +660,8 @@
       </tbody></table></div>` : `<div class="empty">Chưa có lượt làm bài nào.</div>`}
       <div class="section-h"><h2>Cài đặt</h2></div>
       <div class="panel">
+        <div class="kv"><label for="theme">Màu giao diện:</label>
+          <select id="theme"><option value="light" ${themePref() === "light" ? "selected" : ""}>Nền sáng</option><option value="dark" ${themePref() === "dark" ? "selected" : ""}>Nền tối</option><option value="auto" ${themePref() === "auto" ? "selected" : ""}>Theo cài đặt của máy</option></select></div>
         <div class="kv"><label for="accent">Giọng đọc mẫu:</label>
           <select id="accent"><option value="en-GB" ${accent() === "en-GB" ? "selected" : ""}>Anh – Anh (en-GB)</option><option value="en-US" ${accent() === "en-US" ? "selected" : ""}>Anh – Mỹ (en-US)</option></select>
           ${spkBtn("Hello! Welcome to English class.")}</div>
@@ -857,6 +871,7 @@
     const t = e.target.closest("button, a");
     if (!t) return;
     const d = t.dataset;
+    if (d.themeToggle != null) { store.set("theme", isDark() ? "light" : "dark"); applyTheme(); const sel = document.getElementById("theme"); if (sel) sel.value = themePref(); return; }
     if (d.say != null) { e.preventDefault(); say(d.say); return; }
     if (d.mic != null) { e.preventDefault(); onMic(t); return; }
     if (d.grade) { store.set("grade", d.grade); }
@@ -908,6 +923,7 @@
   document.addEventListener("change", (e) => {
     const t = e.target;
     if (t.id === "grade-select") { store.set("grade", t.value); location.hash = t.value; }
+    if (t.id === "theme") { store.set("theme", t.value); applyTheme(); toast(t.value === "light" ? "Đã chuyển sang nền sáng." : t.value === "dark" ? "Đã chuyển sang nền tối." : "Giao diện sẽ theo cài đặt của máy."); }
     if (t.id === "accent") { store.set("accent", t.value); toast(t.value === "en-GB" ? "Đã chọn giọng Anh – Anh." : "Đã chọn giọng Anh – Mỹ."); }
   });
   document.addEventListener("keydown", (e) => {
@@ -975,5 +991,7 @@
     if (!keepScroll) window.scrollTo(0, 0);
   }
   window.addEventListener("hashchange", () => route());
+  try { window.matchMedia("(prefers-color-scheme: dark)").addEventListener("change", applyTheme); } catch (e) { /* bỏ qua */ }
+  applyTheme();
   route();
 })();
