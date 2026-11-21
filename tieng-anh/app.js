@@ -66,20 +66,39 @@
   const accent = () => store.get("accent", "en-GB");
   function loadVoices() { try { TTS.voices = window.speechSynthesis.getVoices() || []; } catch (e) { TTS.voices = []; } }
   if ("speechSynthesis" in window) { loadVoices(); try { window.speechSynthesis.onvoiceschanged = loadVoices; } catch (e) { /* bỏ qua */ } }
+  function utter(text, rate) {
+    const u = new SpeechSynthesisUtterance(text);
+    const want = accent().toLowerCase();
+    const vs = TTS.voices;
+    const v = vs.find((x) => x.lang && x.lang.toLowerCase().replace("_", "-") === want) || vs.find((x) => /^en[-_](gb|us)/i.test(x.lang)) || vs.find((x) => /^en/i.test(x.lang));
+    if (v) u.voice = v;
+    u.lang = v ? v.lang : accent();
+    u.rate = rate || 0.9;
+    return u;
+  }
+  let sayListId = 0;
   function say(text, rate) {
     if (!("speechSynthesis" in window)) { toast("Trình duyệt này chưa hỗ trợ đọc to."); return; }
-    try {
-      window.speechSynthesis.cancel();
-      const u = new SpeechSynthesisUtterance(text);
-      const want = accent().toLowerCase();
-      const vs = TTS.voices;
-      const v = vs.find((x) => x.lang && x.lang.toLowerCase().replace("_", "-") === want) || vs.find((x) => /^en[-_](gb|us)/i.test(x.lang)) || vs.find((x) => /^en/i.test(x.lang));
-      if (v) u.voice = v;
-      u.lang = v ? v.lang : accent();
-      u.rate = rate || 0.9;
-      window.speechSynthesis.speak(u);
-    } catch (e) { toast("Không phát được âm thanh."); }
+    sayListId++;
+    try { window.speechSynthesis.cancel(); window.speechSynthesis.speak(utter(text, rate)); } catch (e) { toast("Không phát được âm thanh."); }
   }
+  // Đọc lần lượt nhiều từ, gọi onWord(i) khi bắt đầu đọc từ thứ i, onWord(-1) khi xong
+  function sayList(texts, onWord) {
+    if (!("speechSynthesis" in window)) { toast("Trình duyệt này chưa hỗ trợ đọc to."); return; }
+    const id = ++sayListId;
+    try { window.speechSynthesis.cancel(); } catch (e) { /* bỏ qua */ }
+    const next = (i) => {
+      if (id !== sayListId) return;
+      if (i >= texts.length) { onWord(-1); return; }
+      onWord(i);
+      const u = utter(texts[i], 0.85);
+      u.onend = () => setTimeout(() => next(i + 1), 700);
+      u.onerror = () => { if (id === sayListId) onWord(-1); };
+      try { window.speechSynthesis.speak(u); } catch (e) { onWord(-1); }
+    };
+    next(0);
+  }
+  function stopSay() { sayListId++; try { window.speechSynthesis && window.speechSynthesis.cancel(); } catch (e) { /* bỏ qua */ } }
 
   /* ---------- Nhận giọng nói (luyện nói) ---------- */
   const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
@@ -311,6 +330,7 @@
   };
   const PAPER_MIN = { 4: 35, 7: 45 };
   const IOE_MIN = 20;
+  const DE_PER_TERM = 6;
 
   function buildPractice(G, n) {
     const P = poolOf(G, n, n), r = Math.random;
@@ -330,7 +350,7 @@
       if (S.reading) {
         const rs = P.readings.filter((R) => R.kind === S.reading);
         if (!rs.length) return;
-        list = Q.reading(rs[(k - 1 + Math.floor(r() * rs.length)) % rs.length], r);
+        list = Q.reading(rs[(k - 1 + term.units[0]) % rs.length], r); // xoay vòng để các đề dùng đều các bài đọc
       } else list = fromRecipe(S.r, draw, G, r);
       if (!list.length) return;
       secs.push({ h: S.h, vi: S.vi, start: qs.length, n: list.length });
@@ -365,7 +385,7 @@
   /* ---------- Trạng thái ---------- */
   let RUN = null;
   let timerId = null;
-  const UI = { unitKey: "", tab: "vocab", fc: 0, flip: false, ioeScope: 2, confirm: false, resetAsk: false };
+  const UI = { unitKey: "", tab: "learn", fc: 0, flip: false, fcOrder: null, fcOnlyNew: false, fcFront: "en", ioeScope: 2, confirm: false, resetAsk: false };
 
   function startRun(o) {
     RUN = Object.assign({ ans: new Array(o.qs.length).fill(null), checked: new Array(o.qs.length).fill(false), idx: 0, t0: Date.now(), done: false, result: null }, o);
@@ -472,7 +492,7 @@
         <p class="lead">Học từ vựng có phát âm, luyện tập theo từng Unit, luyện nói với micro, thi thử dạng IOE có tính giờ và làm đề kiểm tra giữa kì, cuối kì. Tất cả miễn phí.</p>
       </div>
       <div class="grade-pick">
-        ${GRADE_KEYS.map((k) => { const G = GRADES[k]; return `<a class="grade-tile" href="#${k}" data-grade="${k}"><span class="gt-num">${G.grade}</span><span class="gt-name">${G.name}</span><span class="gt-meta">${G.units.length} Unit · ${G.words.length} từ vựng · 12 đề kiểm tra</span><span class="gt-go">Vào học →</span></a>`; }).join("")}
+        ${GRADE_KEYS.map((k) => { const G = GRADES[k]; return `<a class="grade-tile" href="#${k}" data-grade="${k}"><span class="gt-num">${G.grade}</span><span class="gt-name">${G.name}</span><span class="gt-meta">${G.units.length} Unit · ${G.words.length} từ vựng · ${G.terms.length * DE_PER_TERM} đề kiểm tra</span><span class="gt-go">Vào học →</span></a>`; }).join("")}
       </div>
     </div></section>
     <section class="wrap">
@@ -534,7 +554,7 @@
         <article class="pack">${ILL.paper}
           <h3>Gói đề kiểm tra</h3><p class="desc">Dành cho em chuẩn bị bài kiểm tra giữa kì và cuối kì trên lớp.</p>
           <div class="perks-h">3 quyền lợi</div>
-          ${perks(["4 kì kiểm tra × 3 đề, chấm theo thang điểm 10", `Đủ phần nghe, ${G.grade === 7 ? "phát âm, " : ""}từ vựng, ngữ pháp, đọc hiểu và viết câu`, "Câu sai được lưu vào sổ để ôn lại"])}
+          ${perks([`${G.terms.length} kì kiểm tra × ${DE_PER_TERM} đề (${G.terms.length * DE_PER_TERM} đề), chấm thang điểm 10`, `Đủ phần nghe, ${G.grade === 7 ? "phát âm, " : ""}từ vựng, ngữ pháp, đọc hiểu và viết câu`, "Câu sai được lưu vào sổ để ôn lại"])}
           <div class="price">0 <small>VNĐ</small></div><div class="price-note">Miễn phí, có đáp án và giải thích</div>
           <div class="pack-btns"><a class="btn btn-red" href="#${G.key}-de">Làm đề</a><button type="button" class="btn btn-line" data-redo="${G.key}">Ôn câu sai</button></div></article>
       </div>
@@ -551,32 +571,60 @@
     const U = G.units.find((u) => u.n === n);
     if (!U) { location.hash = G.key; return; }
     const key = G.key + ":" + n;
-    if (UI.unitKey !== key) { UI.unitKey = key; UI.tab = "vocab"; UI.fc = 0; UI.flip = false; }
+    if (UI.unitKey !== key) { UI.unitKey = key; UI.tab = "learn"; UI.fc = 0; UI.flip = false; UI.fcOrder = null; UI.fcOnlyNew = false; }
     const kn = known(G.key);
+    const knownN = U.words.filter((x) => kn[x.en]).length;
     const prev = G.units.find((u) => u.n === n - 1), next = G.units.find((u) => u.n === n + 1);
-    const tabs = [["vocab", "Từ vựng"], ["practice", "Luyện tập"], ["speak", "Luyện nói"]];
+    const tabs = [["learn", "Học từ"], ["flash", "Flashcard"], ["practice", "Luyện tập"], ["speak", "Luyện nói"]];
     let body = "";
-    if (UI.tab === "vocab") {
-      const w = U.words[UI.fc % U.words.length];
-      body = `<div class="grid-2">
-        <div class="fc-wrap">
-          <button type="button" class="fc ${UI.flip ? "flip" : ""}" data-fc-flip aria-label="Lật thẻ"><span class="fc-inner">
-            <span class="fc-face fc-front"><span class="fc-en">${esc(w.en)}</span><span class="fc-tip">Chạm để xem nghĩa</span></span>
-            <span class="fc-face fc-back"><span class="fc-vi">${esc(w.vi)}</span><span class="muted">${esc(w.en)}</span></span>
+    if (UI.tab === "learn") {
+      body = `<div class="learn-head">
+          <p class="muted">Bấm loa để nghe từng từ, hoặc bấm <b>Nghe cả bài</b> để máy đọc lần lượt. Thuộc từ nào thì bấm dấu tích ở góc thẻ.</p>
+          <div class="learn-tools"><span class="pill">${knownN}/${U.words.length} từ đã thuộc</span>
+            <button type="button" class="btn btn-blue btn-sm" data-say-all>${I.spk}<span>Nghe cả bài</span></button></div>
+        </div>
+        <div class="wcards">${U.words.map((x, i) => `<div class="wcard ${kn[x.en] ? "is-known" : ""}" data-wi="${i}">
+            <div class="wc-top">${spkBtn(x.en)}<button type="button" class="chk ${kn[x.en] ? "on" : ""}" data-known="${esc(x.en)}" aria-label="Đánh dấu đã thuộc ${esc(x.en)}" aria-pressed="${kn[x.en] ? "true" : "false"}">${I.check}</button></div>
+            <div class="wc-en">${esc(x.en)}</div><div class="wc-vi">${esc(x.vi)}</div></div>`).join("")}</div>
+        <div class="panel" style="margin-top:20px"><h3>Mẫu câu</h3><ul class="sents">${U.sents.map((s) => `<li>${spkBtn(s.s)}<span>${esc(s.s)}</span></li>`).join("")}</ul></div>
+        <div class="next-step"><span>Học xong rồi? Ôn lại cho nhớ lâu:</span>
+          <button type="button" class="btn btn-red btn-sm" data-tab="flash">Ôn bằng Flashcard</button>
+          <button type="button" class="btn btn-line btn-sm" data-tab="practice">Làm bài luyện tập</button></div>`;
+    } else if (UI.tab === "flash") {
+      const deck = fcDeck(U, kn);
+      if (!deck.length) {
+        body = `<div class="empty"><b>Em đã thuộc hết ${U.words.length} từ của Unit này!</b><br>Bấm bên dưới để ôn lại tất cả các thẻ.<br><br>
+          <button type="button" class="btn btn-red btn-sm" data-fc-only>Ôn lại tất cả</button></div>`;
+      } else {
+        if (UI.fc >= deck.length) UI.fc = 0;
+        const w = U.words[deck[UI.fc]];
+        const viFront = UI.fcFront === "vi";
+        const front = viFront ? `<span class="fc-vi fc-vi-front">${esc(w.vi)}</span>` : `<span class="fc-en">${esc(w.en)}</span>`;
+        const back = viFront ? `<span class="fc-en fc-en-back">${esc(w.en)}</span><span class="muted">${esc(w.vi)}</span>` : `<span class="fc-vi">${esc(w.vi)}</span><span class="muted">${esc(w.en)}</span>`;
+        body = `<div class="flash">
+          <div class="fc-opts">
+            <button type="button" class="chip-opt ${UI.fcOrder ? "on" : ""}" data-fc-shuffle aria-pressed="${!!UI.fcOrder}">Trộn thẻ</button>
+            <button type="button" class="chip-opt ${UI.fcOnlyNew ? "on" : ""}" data-fc-only aria-pressed="${!!UI.fcOnlyNew}">Chỉ ôn từ chưa thuộc</button>
+            <button type="button" class="chip-opt" data-fc-front>Mặt trước: ${viFront ? "Tiếng Việt" : "Tiếng Anh"}</button>
+          </div>
+          <div class="bar" aria-hidden="true"><i style="width:${Math.round(((UI.fc + 1) / deck.length) * 100)}%"></i></div>
+          <button type="button" class="fc ${UI.flip ? "flip" : ""}" data-fc-flip data-word="${esc(w.en)}" aria-label="Lật thẻ"><span class="fc-inner">
+            <span class="fc-face fc-front">${front}<span class="fc-tip">Chạm để lật thẻ</span></span>
+            <span class="fc-face fc-back">${back}${kn[w.en] ? '<span class="pill ok">✓ Đã thuộc</span>' : ""}</span>
           </span></button>
           <div class="fc-ctrl">
-            <button type="button" class="btn btn-ghost btn-sm" data-fc="-1">← Trước</button>
+            <button type="button" class="btn btn-ghost btn-sm" data-fc="-1" aria-label="Thẻ trước">←</button>
             ${spkBtn(w.en)}
-            <span class="count">${(UI.fc % U.words.length) + 1}/${U.words.length}</span>
-            <button type="button" class="btn btn-ghost btn-sm ${kn[w.en] ? "known-on" : ""}" data-known="${esc(w.en)}">${kn[w.en] ? "✓ Đã thuộc" : "Đánh dấu thuộc"}</button>
-            <button type="button" class="btn btn-ghost btn-sm" data-fc="1">Sau →</button>
+            <span class="count">Thẻ ${UI.fc + 1}/${deck.length}</span>
+            <button type="button" class="btn btn-ghost btn-sm" data-fc="1" aria-label="Thẻ sau">→</button>
           </div>
-          <div class="panel"><h3>Mẫu câu</h3><ul class="sents">${U.sents.map((s) => `<li>${spkBtn(s.s)}<span>${esc(s.s)}</span></li>`).join("")}</ul></div>
-        </div>
-        <div class="panel"><h3>Danh sách từ (${U.words.filter((x) => kn[x.en]).length}/${U.words.length} đã thuộc)</h3>
-          <ul class="wlist">${U.words.map((x) => `<li>${spkBtn(x.en)}<span><span class="w-en">${esc(x.en)}</span><span class="w-vi">${esc(x.vi)}</span></span>
-            <button type="button" class="chk ${kn[x.en] ? "on" : ""}" data-known="${esc(x.en)}" aria-label="Đánh dấu đã thuộc ${esc(x.en)}" aria-pressed="${kn[x.en] ? "true" : "false"}">${I.check}</button></li>`).join("")}</ul></div>
-      </div>`;
+          <div class="fc-mark">
+            <button type="button" class="btn btn-line" data-fc-mark="again">Chưa thuộc</button>
+            <button type="button" class="btn btn-red" data-fc-mark="known">Đã thuộc ✓</button>
+          </div>
+          <p class="muted fc-help">Đã thuộc ${knownN}/${U.words.length} từ. Trên máy tính: phím cách để lật thẻ, mũi tên trái/phải để chuyển thẻ.</p>
+        </div>`;
+      }
     } else if (UI.tab === "practice") {
       const pct = best()[`p:${G.key}:${n}`];
       const types = G.grade === 7 ? "nghĩa của từ, nghe, điền chữ, nghe – viết, ngữ pháp, phát âm, trọng âm, tìm lỗi sai, câu đồng nghĩa, sắp xếp câu" : "nghĩa của từ, nghe và chọn, điền chữ cái còn thiếu, ngữ pháp, nghe câu, sắp xếp câu";
@@ -599,6 +647,17 @@
       <div class="tabs" role="tablist">${tabs.map(([k, t]) => `<button type="button" role="tab" class="tab ${UI.tab === k ? "on" : ""}" aria-selected="${UI.tab === k}" data-tab="${k}">${t}</button>`).join("")}</div>
       ${body}
     </div>`;
+  }
+  function fcDeck(U, kn) {
+    let idx = UI.fcOrder && UI.fcOrder.length === U.words.length ? UI.fcOrder : U.words.map((_, i) => i);
+    if (UI.fcOnlyNew) idx = idx.filter((i) => !kn[U.words[i].en]);
+    return idx;
+  }
+  const curUnit = () => { const [gk, n] = UI.unitKey.split(":"); const G = GRADES[gk]; return { G, U: G && G.units.find((u) => u.n === +n) }; };
+  function fcMove(step) {
+    const { G, U } = curUnit(); if (!U) return;
+    const deck = fcDeck(U, known(G.key)); if (!deck.length) return;
+    UI.fc = (UI.fc + step + deck.length) % deck.length; UI.flip = false; route(true);
   }
   function speakRow(text, vi) {
     return `<div class="sp-row" data-target="${esc(text)}"><div class="sp-text">${esc(text)}${vi ? ` <span class="muted" style="font-weight:400">· ${esc(vi)}</span>` : ""}</div>
@@ -632,10 +691,10 @@
     view.innerHTML = `<div class="wrap">
       <ol class="stepper"><li class="done"><b>1</b><span>Chọn lớp</span></li><li class="dash" aria-hidden="true"></li><li class="done"><b>2</b><span>Gói đề kiểm tra</span></li><li class="dash" aria-hidden="true"></li><li class="on"><b>3</b><span>Chọn đề</span></li></ol>
       <div class="practice-card">${ILL.paper}<div><h1>Đề kiểm tra · ${G.name}</h1>
-        <p class="muted">Mỗi đề ${G.grade === 7 ? "khoảng 38 câu, 45 phút" : "khoảng 30 câu, 35 phút"}, trình bày theo từng phần như đề trên lớp. Nộp bài xong em xem điểm thang 10, đáp án và giải thích. Mỗi đề luôn giữ nguyên câu hỏi để em làm lại và so sánh.</p></div></div>
+        <p class="muted">Mỗi đề ${G.grade === 7 ? "khoảng 38 câu, 45 phút" : "khoảng 30 câu, 35 phút"}, trình bày theo từng phần như đề trên lớp. Mỗi kì có ${DE_PER_TERM} đề, tổng cộng ${G.terms.length * DE_PER_TERM} đề. Nộp bài xong em xem điểm thang 10, đáp án và giải thích. Mỗi đề luôn giữ nguyên câu hỏi để em làm lại và so sánh.</p></div></div>
       <div class="terms" style="margin-top:20px">
         ${G.terms.map((t) => `<div class="term"><h3>${t.name}</h3><p>Unit ${t.units[0]}–${t.units[1]}</p><div class="de-list">
-          ${[1, 2, 3].map((k) => { const p = b[`e:${G.key}:${t.key}:${k}`]; return `<button type="button" class="de" data-exam="${t.key}:${k}"><b>Đề ${k}</b><span class="${p == null ? "" : "has"}">${p == null ? "Chưa làm" : "Cao nhất " + (p / 10).toFixed(1).replace(".", ",") + " điểm"}</span></button>`; }).join("")}
+          ${Array.from({ length: DE_PER_TERM }, (_, i) => i + 1).map((k) => { const p = b[`e:${G.key}:${t.key}:${k}`]; return `<button type="button" class="de" data-exam="${t.key}:${k}"><b>Đề ${k}</b><span class="${p == null ? "" : "has"}">${p == null ? "Chưa làm" : "Cao nhất " + (p / 10).toFixed(1).replace(".", ",") + " điểm"}</span></button>`; }).join("")}
         </div></div>`).join("")}
       </div>
     </div>`;
@@ -896,9 +955,37 @@
     if (d.confirm != null) { UI.confirm = false; finish(); return; }
     if (d.cancel != null) { UI.confirm = false; if (RUN.kind === "paper") $("#confirm-slot").innerHTML = ""; else renderSingle($("#view")); return; }
     if (d.again != null) { RUN.remake(); return; }
-    if (d.tab) { UI.tab = d.tab; route(true); return; }
-    if (d.fcFlip != null) { UI.flip = !UI.flip; t.classList.toggle("flip", UI.flip); if (UI.flip) { const en = t.querySelector(".fc-front .fc-en"); if (en) say(en.textContent); } return; }
-    if (d.fc) { const G = GRADES[UI.unitKey.split(":")[0]]; const U = G.units.find((u) => u.n === +UI.unitKey.split(":")[1]); UI.fc = (UI.fc + +d.fc + U.words.length) % U.words.length; UI.flip = false; route(true); return; }
+    if (d.tab) { stopSay(); UI.tab = d.tab; UI.flip = false; route(true); if (t.closest(".next-step")) window.scrollTo(0, 0); return; }
+    if (d.fcFlip != null) { UI.flip = !UI.flip; t.classList.toggle("flip", UI.flip); say(d.word); return; }
+    if (d.fc) { fcMove(+d.fc); return; }
+    if (d.fcMark) {
+      const { G, U } = curUnit(); if (!U) return;
+      const kn = known(G.key);
+      const deck = fcDeck(U, kn); const w = U.words[deck[UI.fc]]; if (!w) return;
+      if (d.fcMark === "known") kn[w.en] = 1; else kn[w.en] = 0;
+      if (!kn[w.en]) kn[w.en] = undefined;
+      store.set("known:" + G.key, kn);
+      // Ở chế độ "chỉ ôn từ chưa thuộc", thẻ vừa thuộc rời khỏi bộ nên giữ nguyên vị trí
+      if (!(UI.fcOnlyNew && d.fcMark === "known")) UI.fc = UI.fc + 1;
+      const left = fcDeck(U, known(G.key)).length;
+      if (UI.fc >= left) { UI.fc = 0; if (left) toast("Hết một vòng thẻ! Bắt đầu lại từ thẻ đầu."); }
+      UI.flip = false; route(true); return;
+    }
+    if (d.fcShuffle != null) { const { U } = curUnit(); UI.fcOrder = UI.fcOrder ? null : shuffle(U.words.map((_, i) => i)); UI.fc = 0; UI.flip = false; route(true); return; }
+    if (d.fcOnly != null) { UI.fcOnlyNew = !UI.fcOnlyNew; UI.fc = 0; UI.flip = false; route(true); return; }
+    if (d.fcFront != null) { UI.fcFront = UI.fcFront === "vi" ? "en" : "vi"; UI.flip = false; route(true); return; }
+    if (d.sayAll != null) {
+      const { U } = curUnit(); if (!U) return;
+      const label = (txt) => { const sp = t.querySelector("span"); if (sp) sp.textContent = txt; };
+      if (t.classList.contains("playing")) { stopSay(); t.classList.remove("playing"); label("Nghe cả bài"); $$(".wcard.now").forEach((c) => c.classList.remove("now")); return; }
+      t.classList.add("playing"); label("Dừng đọc");
+      sayList(U.words.map((w) => w.en), (i) => {
+        $$(".wcard.now").forEach((c) => c.classList.remove("now"));
+        if (i < 0) { t.classList.remove("playing"); label("Nghe cả bài"); return; }
+        const c = document.querySelector(`.wcard[data-wi="${i}"]`); if (c) { c.classList.add("now"); c.scrollIntoView({ block: "nearest", behavior: "smooth" }); }
+      });
+      return;
+    }
     if (d.known) { const gk = UI.unitKey.split(":")[0]; const kn = known(gk); if (kn[d.known]) delete kn[d.known]; else kn[d.known] = 1; store.set("known:" + gk, kn); route(true); return; }
     if (d.practice) { startPractice(GRADES[curGradeKey()], +d.practice); return; }
     if (d.scope != null) { UI.ioeScope = +d.scope; route(true); return; }
@@ -927,6 +1014,12 @@
     if (t.id === "accent") { store.set("accent", t.value); toast(t.value === "en-GB" ? "Đã chọn giọng Anh – Anh." : "Đã chọn giọng Anh – Mỹ."); }
   });
   document.addEventListener("keydown", (e) => {
+    if (/^#lop\d-u\d+$/.test(location.hash) && UI.tab === "flash" && !e.target.matches("input, textarea, select") && !e.ctrlKey && !e.metaKey && !e.altKey) {
+      if (e.key === " " || e.key === "Enter") { const c = $(".fc"); if (c && (e.target === document.body || e.target === c)) { e.preventDefault(); c.click(); } }
+      else if (e.key === "ArrowRight") { e.preventDefault(); fcMove(1); }
+      else if (e.key === "ArrowLeft") { e.preventDefault(); fcMove(-1); }
+      return;
+    }
     if (!RUN || RUN.done || location.hash !== "#lam-bai" || RUN.kind === "paper") return;
     const inInput = e.target.matches("input, textarea, select");
     if (e.key === "Enter") {
@@ -970,7 +1063,7 @@
     const h = decodeURIComponent(location.hash.slice(1)) || "trang-chu";
     const view = $("#view");
     let m, active = "";
-    if (h !== "lam-bai") { try { window.speechSynthesis && window.speechSynthesis.cancel(); } catch (e) { /* bỏ qua */ } }
+    if (h !== "lam-bai" && !keepScroll) stopSay();
     if ((m = h.match(/^(lop\d)(?:-(u(\d+)|ioe|de))?$/)) && GRADES[m[1]]) {
       store.set("grade", m[1]);
       const G = GRADES[m[1]];

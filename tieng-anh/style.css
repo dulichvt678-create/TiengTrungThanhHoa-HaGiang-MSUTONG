@@ -391,3 +391,43 @@ tr.me td { background: var(--blue-soft); font-weight: 700; }
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { transition: none !important; animation: none !important; }
 }
+
+/* ---------- Học từ ---------- */
+.btn svg { width: 18px; height: 18px; }
+.pill { display: inline-block; padding: 4px 12px; border-radius: 999px; background: var(--blue-soft); color: var(--blue); font-weight: 700; font-size: .85rem; font-variant-numeric: tabular-nums; }
+.pill.ok { background: var(--ok-soft); color: var(--ok); }
+.learn-head { display: flex; justify-content: space-between; align-items: center; gap: 12px 20px; flex-wrap: wrap; margin-bottom: 14px; }
+.learn-head p { margin: 0; flex: 1 1 320px; min-width: 0; }
+.learn-tools { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+.btn.playing { background: var(--red); }
+.wcards { display: grid; grid-template-columns: repeat(auto-fill, minmax(170px, 1fr)); gap: 12px; }
+.wcard { background: var(--card); border: 2px solid var(--line); border-radius: 18px; padding: 12px 14px 14px; display: flex; flex-direction: column; gap: 4px; min-width: 0; transition: border-color .2s, background .2s; }
+.wcard.is-known { border-color: color-mix(in srgb, var(--ok) 45%, var(--line)); }
+.wcard.now { border-color: var(--red); background: var(--red-soft); }
+.wc-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px; }
+.wc-en { font-family: var(--f-display); font-weight: 800; font-size: 1.35rem; line-height: 1.15; color: var(--blue); overflow-wrap: anywhere; }
+.wc-vi { color: var(--muted); font-size: .92rem; }
+.next-step { margin-top: 20px; display: flex; align-items: center; gap: 10px; flex-wrap: wrap; padding: 14px 16px; border-radius: 16px; background: var(--blue-soft); }
+.next-step span { flex: 1 1 220px; font-weight: 600; }
+@media (max-width: 420px) { .wcards { grid-template-columns: 1fr 1fr; gap: 8px; } .wc-en { font-size: 1.15rem; } }
+
+/* ---------- Flashcard ---------- */
+.flash { max-width: 600px; margin: 0 auto; display: flex; flex-direction: column; gap: 14px; }
+.fc-opts { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; }
+.fc-opts .chip-opt { font-size: .88rem; padding: 6px 14px; }
+.flash .bar { margin: 0; }
+.fc-vi-front { color: #fff; }
+.fc-en-back { color: var(--blue); }
+.fc-mark { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.fc-help { text-align: center; font-size: .85rem; margin: 0; }
+
+/* Điện thoại nhỏ: giữ logo, chọn lớp và nút đổi nền trên một hàng */
+@media (max-width: 480px) {
+  .brand-name { font-size: 1.1rem; }
+  .brand-name small { display: none; }
+  .brand-mark { width: 38px; height: 38px; }
+  .theme-btn { width: 36px; height: 36px; }
+  .grade-switch a { padding: 5px 10px; }
+  .tab { padding: 10px 10px; font-size: .92rem; }
+  .unit-head .pack-btns { width: 100%; }
+}

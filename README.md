@@ -21,9 +21,9 @@ Mỗi dòng từ vựng: `chữ Hán|pinyin cách âm tiết|nghĩa`, ví dụ `
 ## App Tiếng Anh lớp 4 & lớp 7 (thư mục `tieng-anh/`)
 Web tĩnh riêng, mở `tieng-anh/index.html` hoặc kéo thư mục `tieng-anh` thả vào Netlify Drop.
 
-- **Gói học tập theo Unit**: 20 Unit lớp 4, 12 Unit lớp 7 theo chủ đề sách Global Success; thẻ từ có phát âm, đánh dấu từ đã thuộc, bài luyện tập chấm ngay có giải thích, luyện nói bằng micro.
+- **Gói học tập theo Unit**: 20 Unit lớp 4, 12 Unit lớp 7 theo chủ đề sách Global Success; mỗi Unit có 4 tab: Học từ (thẻ từ có phát âm, nghe cả bài, mẫu câu), Flashcard (lật thẻ, Đã thuộc/Chưa thuộc, trộn thẻ, chỉ ôn từ chưa thuộc, mặt trước Anh hoặc Việt), Luyện tập (chấm ngay có giải thích), Luyện nói (micro).
 - **Gói thi thử dạng IOE**: 30 câu, 20 phút, thang 300 điểm, chọn phạm vi Học kì 1 / Học kì 2 / Cả năm, bảng xếp hạng điểm của em, xem lại câu sai.
-- **Gói đề kiểm tra**: giữa kì 1, cuối kì 1, giữa kì 2, cuối kì 2, mỗi kì 3 đề cố định, chấm thang 10, có đáp án và giải thích. Lớp 7 có phần phát âm, trọng âm, tìm lỗi sai, đọc điền từ, câu đồng nghĩa.
+- **Gói đề kiểm tra**: giữa kì 1, cuối kì 1, giữa kì 2, cuối kì 2, mỗi kì 6 đề cố định (24 đề mỗi lớp), chấm thang 10, có đáp án và giải thích. Lớp 7 có phần phát âm, trọng âm, tìm lỗi sai, đọc điền từ, câu đồng nghĩa.
 - **Kết quả**: lịch sử làm bài, sổ câu sai để ôn lại, chọn giọng đọc Anh – Anh hoặc Anh – Mỹ.
 
 Sửa nội dung trong `tieng-anh/data/lop4.js` và `tieng-anh/data/lop7.js` (định dạng ghi ở đầu mỗi file). Câu hỏi, bài đọc và đề do app tự biên soạn; đây không phải trang chính thức của cuộc thi IOE.

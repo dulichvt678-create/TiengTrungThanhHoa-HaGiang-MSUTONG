@@ -46,7 +46,9 @@ I'm from Japan. I'm ___.|Japanese|Japan|America|Britain
 What ___ are you? – I'm Australian.|nationality|country|name|from
 He is from Britain. He is ___.|British|Britain|American|Thai
 Mai and Nam ___ from Viet Nam.|are|is|am|be#Chủ ngữ số nhiều (Mai and Nam) đi với "are".
-___ is Tom from? – He's from America.|Where|What|Who|How`
+___ is Tom from? – He's from America.|Where|What|Who|How
+What nationality is she? – She's ___.|Malaysian|Malaysia|Japan|America
+Where's Akiko from? – She's from ___.|Japan|Japanese|American|British`
     },
     {
       n: 2, t: "Time and daily routines", vi: "Giờ giấc và sinh hoạt hằng ngày",
@@ -79,7 +81,9 @@ I get up ___ six o'clock.|at|in|on|to#Trước giờ cụ thể dùng "at".
 What time ___ you have breakfast?|do|does|are|is
 It's eight ___. (8:00)|o'clock|thirty|clock|time
 My brother ___ to bed at ten o'clock.|goes|go|going|to go#Chủ ngữ số ít (My brother) → động từ thêm -s/-es.
-I have lunch at eleven ___. (11:30)|thirty|fifteen|forty-five|o'clock`
+I have lunch at eleven ___. (11:30)|thirty|fifteen|forty-five|o'clock
+I ___ my homework at eight o'clock in the evening.|do|does|make|doing
+What time does she get up? – She ___ up at six fifteen.|gets|get|getting|to get#Chủ ngữ "She" → động từ thêm -s.`
     },
     {
       n: 3, t: "My week", vi: "Tuần của em",
@@ -111,7 +115,9 @@ I visit my grandparents ___ Sundays.|on|in|at|to#Trước thứ trong tuần dù
 What do you do ___ the weekend?|at|in|on|to#Người Anh nói "at the weekend".
 What do you do on Fridays? – I ___ at school.|study|studies|studying|to study
 The day after Monday is ___.|Tuesday|Sunday|Wednesday|Thursday
-Saturday and Sunday are the ___.|weekend|weekday|week|today`
+Saturday and Sunday are the ___.|weekend|weekday|week|today
+We have English ___ Monday and Thursday.|on|in|at|for
+What does your brother do on Sundays? – He ___ TV.|watches|watch|watching|to watch#He + động từ thêm -es: watch → watches.`
     },
     {
       n: 4, t: "My birthday party", vi: "Tiệc sinh nhật của em",
@@ -148,7 +154,9 @@ My birthday is ___ June.|in|on|at|to#Trước tên tháng dùng "in".
 What would you like to ___? – I'd like some juice.|drink|eat|play|do
 I'd like ___ chips, please.|some|a|an|any
 The first month of the year is ___.|January|December|March|June
-Would you like some jam? – ___|Yes, please.|Yes, I am.|No, I don't.|Yes, I do.#Trả lời lời mời "Would you like...?": Yes, please. / No, thank you.`
+Would you like some jam? – ___|Yes, please.|Yes, I am.|No, I don't.|Yes, I do.#Trả lời lời mời "Would you like...?": Yes, please. / No, thank you.
+My birthday is in ___. It's the last month of the year.|December|January|May|August
+What ___ you like to drink? – Some milk, please.|would|are|is|am`
     },
     {
       n: 5, t: "Things we can do", vi: "Những việc chúng em có thể làm",
@@ -176,7 +184,9 @@ Can you dance? – No, I ___.|can't|can|don't|am not
 What ___ you do? – I can draw.|can|are|is|does
 She can ___ the guitar.|play|plays|playing|to play#Sau "can" dùng động từ nguyên mẫu.
 I can ride a ___.|bike|piano|guitar|song
-Can he cook? – Yes, he ___.|can|can't|does|is`
+Can he cook? – Yes, he ___.|can|can't|does|is
+Can your sister swim? – No, she ___.|can't|can|isn't|doesn't
+I can't ___ a horse, but I can ride a bike.|ride|rides|riding|to ride#Sau can / can't dùng động từ nguyên mẫu.`
     },
     {
       n: 6, t: "Our school facilities", vi: "Cơ sở vật chất trường em",
@@ -209,7 +219,9 @@ ___ there a gym? – Yes, there is.|Is|Are|Do|Does
 How many classrooms ___ there?|are|is|do|does
 There ___ a big garden at my school.|is|are|am|be#"There is" + danh từ số ít.
 There are two ___ in my school.|buildings|building|a building|an building
-We read books in the ___.|library|gym|playground|computer room`
+We read books in the ___.|library|gym|playground|computer room
+Is there a music room in your school? – No, there ___.|isn't|aren't|is|not
+My school is ___ the mountains.|in|on|at|under`
     },
     {
       n: 7, t: "Our timetables", vi: "Thời khoá biểu của chúng em",
@@ -238,7 +250,9 @@ What subjects ___ you have today?|do|does|are|is
 When do you have IT? – I have ___ on Mondays.|it|them|they|its
 We have Music ___ Wednesdays.|on|in|at|to
 How many ___ do you have today? – Four.|lessons|lesson|subject|day
-She ___ English on Tuesdays.|has|have|having|is have#Chủ ngữ "She" → have đổi thành "has".`
+She ___ English on Tuesdays.|has|have|having|is have#Chủ ngữ "She" → have đổi thành "has".
+What subject ___ you like? – I like Maths.|do|does|are|is
+We have Science on Tuesdays ___ Fridays.|and|but|or|so`
     },
     {
       n: 8, t: "My favourite subjects", vi: "Môn học yêu thích của em",
@@ -267,7 +281,9 @@ What's your ___ subject? – It's Science.|favourite|favourites|favour|like
 ___ do you like English? – Because I like stories.|Why|What|Where|When
 I want to be ___ artist.|an|a|the|some#"artist" bắt đầu bằng nguyên âm → dùng "an".
 I like Music because I want to be a ___.|singer|footballer|scientist|writer
-___ is your Maths teacher? – Mr Long.|Who|What|Where|How`
+___ is your Maths teacher? – Mr Long.|Who|What|Where|How
+Why do you like Maths? – ___ I like counting.|Because|But|And|So
+I want to be a ___ because I like writing stories.|writer|singer|footballer|scientist`
     },
     {
       n: 9, t: "Our sports day", vi: "Ngày hội thể thao",
@@ -296,7 +312,9 @@ When is sports day? – It's ___ Sunday.|on|in|at|to
 They are ___ badminton now.|playing|play|plays|played#Thì hiện tại tiếp diễn: am/is/are + V-ing.
 What ___ they doing? – They're running.|are|is|do|does
 My favourite sport is ___ tennis.|table|desk|chair|ball
-We ___ for our team.|cheer|cheers|cheering|to cheer`
+We ___ for our team.|cheer|cheers|cheering|to cheer
+Our team ___ the match last Saturday.|won|win|wins|winning#"last Saturday" → quá khứ: win → won.
+What are you doing? – I ___ volleyball.|am playing|play|playing|plays`
     },
     {
       n: 10, t: "Our summer holidays", vi: "Kì nghỉ hè của chúng em",
@@ -324,7 +342,9 @@ Where ___ you last summer? – I was in the countryside.|were|was|are|is
 I ___ at the beach last summer.|was|were|am|is#"last summer" → quá khứ: I/he/she → was.
 What ___ you do there? – I swam in the sea.|did|do|does|were
 Yesterday we ___ our grandparents.|visited|visit|visits|visiting#"Yesterday" → thì quá khứ đơn.
-We ___ a big sandcastle on the beach.|built|build|builds|building`
+We ___ a big sandcastle on the beach.|built|build|builds|building
+Where were they last summer? – They ___ in the countryside.|were|was|are|is
+Did you take photos? – Yes, I ___.|did|do|was|took`
     },
     {
       n: 11, t: "My home", vi: "Nhà của em",
@@ -354,7 +374,9 @@ Where ___ you live? – I live in Le Loi Street.|do|does|are|is
 What's your street ___? – It's busy.|like|look|liking|likes
 She ___ in a big house.|lives|live|living|is live
 The street is ___. There are many cars.|noisy|quiet|small|young
-My school is ___ my house. I walk there.|near|far|big|on`
+My school is ___ my house. I walk there.|near|far|big|on
+___ is your house like? – It's big and beautiful.|What|Where|How|Who
+I live ___ a small house in the village.|in|on|at|to`
     },
     {
       n: 12, t: "Jobs", vi: "Nghề nghiệp",
@@ -382,7 +404,9 @@ What ___ your mother do? – She's a teacher.|does|do|is|are
 He is ___ actor.|an|a|the|some
 Where does a worker work? – In a ___.|factory|farm|hospital|school
 My father works ___ a farm.|on|in|at|to#Thường nói "on a farm", "in a hospital", "in a factory".
-A ___ helps sick people in the hospital.|nurse|farmer|driver|worker`
+A ___ helps sick people in the hospital.|nurse|farmer|driver|worker
+Where does your mother work? – She works ___ an office.|in|on|to|from
+A ___ drives a bus or a taxi.|driver|farmer|nurse|actor`
     },
     {
       n: 13, t: "Appearance", vi: "Ngoại hình",
@@ -411,7 +435,9 @@ What does he ___ like? – He's tall.|look|looks|looking|see
 What ___ your sister look like?|does|do|is|are
 My brother is very ___. He is 1.8 metres.|tall|short|young|old
 She ___ long hair and big eyes.|has|have|is|are
-My grandfather is ___. He is 80 years old.|old|young|slim|tall`
+My grandfather is ___. He is 80 years old.|old|young|slim|tall
+What does your mother look like? – She ___ slim.|is|are|has|have
+My father ___ short hair.|has|have|is|are`
     },
     {
       n: 14, t: "Daily activities", vi: "Hoạt động hằng ngày",
@@ -438,7 +464,9 @@ What does she do in the evening? – She ___ the dishes.|washes|wash|washing|to 
 I ___ the bed every morning.|make|makes|making|do
 What ___ you do in the afternoon?|do|does|are|is
 He ___ the floor every Saturday.|cleans|clean|cleaning|is clean
-We do housework ___ the weekend.|at|on|to|by`
+We do housework ___ the weekend.|at|on|to|by
+She ___ the clothes on Saturday mornings.|washes|wash|washing|is wash
+I ___ the flowers in the garden every evening.|water|waters|watering|to water`
     },
     {
       n: 15, t: "My family's weekends", vi: "Cuối tuần của gia đình em",
@@ -466,7 +494,9 @@ Where's your mother? – She's ___ the supermarket.|at|on|to|from
 What does your brother do there? – He ___ films.|watches|watch|watching|to watch
 We swim at the ___.|swimming pool|bookshop|cinema|supermarket
 My parents ___ at the shopping centre now.|are|is|am|be
-I buy books at the ___.|bookshop|zoo|park|sports centre`
+I buy books at the ___.|bookshop|zoo|park|sports centre
+What does your father do at the sports centre? – He ___ tennis.|plays|play|playing|is play
+We watch films at the ___.|cinema|bookshop|swimming pool|supermarket`
     },
     {
       n: 16, t: "Weather", vi: "Thời tiết",
@@ -494,7 +524,9 @@ What's the weather ___ today? – It's windy.|like|likes|look|liking
 It's ___ today. Let's go to the beach.|sunny|rainy|stormy|snowy
 Take your raincoat. It's ___.|rainy|sunny|hot|warm
 Where do you want ___ go?|to|for|at|on#want to + động từ nguyên mẫu.
-It's very ___ today. Let's go swimming.|hot|cold|snowy|stormy`
+It's very ___ today. Let's go swimming.|hot|cold|snowy|stormy
+What's the weather ___ in Ha Giang today?|like|likes|is|as
+It's ___. I can see many clouds in the sky.|cloudy|sunny|windy|snowy`
     },
     {
       n: 17, t: "In the city", vi: "Ở thành phố",
@@ -522,7 +554,9 @@ Where's the pharmacy? – It's ___ to the bakery.|next|near|opposite|between
 The post office is ___ the park and the zoo.|between|next|opposite to|behind to#between A and B: ở giữa A và B.
 How ___ I get to the bus stop?|can|do|am|is
 Go ___ and turn right.|straight|left|right|next
-You can buy bread at the ___.|bakery|pharmacy|post office|bus stop`
+You can buy bread at the ___.|bakery|pharmacy|post office|bus stop
+Turn ___ at the bus stop. The pharmacy is on your left.|left|right|straight|next
+Where can I buy medicine? – At the ___.|pharmacy|bakery|bus stop|post office`
     },
     {
       n: 18, t: "At the shopping centre", vi: "Ở trung tâm mua sắm",
@@ -551,7 +585,9 @@ How much ___ the T-shirt?|is|are|do|does#T-shirt là số ít → "How much is..
 How much are the jeans? – ___ 150,000 dong.|They're|It's|It|They
 I want to ___ a pair of sandals.|buy|buys|buying|bought
 These shoes are very ___. They're 900,000 dong.|expensive|cheap|small|short
-How ___ are the socks? – They're 20,000 dong.|much|many|old|long`
+How ___ are the socks? – They're 20,000 dong.|much|many|old|long
+How much ___ these shoes?|are|is|do|does#"shoes" là số nhiều → How much are...?
+I'd like this skirt. It's very ___. Only 50,000 dong.|cheap|expensive|big|old`
     },
     {
       n: 19, t: "The animal world", vi: "Thế giới động vật",
@@ -582,7 +618,9 @@ What animal ___ you want to see?|do|does|are|is
 I like monkeys ___ they can swing.|because|but|and|or
 Giraffes ___ very long necks.|have|has|are|is
 A ___ has black and white stripes.|zebra|lion|bear|hippo
-Look! The tiger ___ roaring.|is|are|am|do`
+Look! The tiger ___ roaring.|is|are|am|do
+Why do you like elephants? – Because they ___ big and friendly.|are|is|can|have
+Kangaroos ___ jump very high.|can|are|is|do`
     },
     {
       n: 20, t: "At the summer camp", vi: "Ở trại hè",
@@ -609,7 +647,9 @@ What are they doing? – They ___ songs.|are singing|sing|is singing|singing
 What's she doing? – She's ___ a tent.|putting up|put up|puts up|to put up
 I ___ playing games with my friends.|am|is|are|be
 Look! The boys ___ tug of war.|are playing|is playing|play|plays
-We tell stories around the ___.|campfire|tent|bakery|zoo`
+We tell stories around the ___.|campfire|tent|bakery|zoo
+What ___ the children doing? – They're playing games.|are|is|do|does
+He ___ telling stories to his friends now.|is|are|am|be`
     }
   ],
   readings: [
@@ -685,6 +725,42 @@ Mia went to the summer camp with her family.|F
 How much was the jacket?|200,000 dong|100,000 dong|150,000 dong|250,000 dong
 The children danced around the campfire.|T
 Why did Mia like the monkeys?|Because they can swing and climb.|Because they are big.|Because they can roar.|Because they can swim.`
+    },
+    {
+      units: [1, 5], kind: "read", title: "Kenji's day",
+      text: "My name is Kenji. I'm from Japan. I'm nine years old. My birthday is in April. I get up at six thirty every day. I go to school from Monday to Friday. I can swim and play the piano, but I can't ride a horse. On Saturdays, I listen to music and help my parents.",
+      qs: `
+Kenji is from Japan.|T
+His birthday is in August.|F
+What time does Kenji get up?|At six thirty|At six o'clock|At seven o'clock|At seven thirty
+What can't Kenji do?|Ride a horse|Swim|Play the piano|Listen to music`
+    },
+    {
+      units: [6, 10], kind: "read", title: "Nam's school week",
+      text: "Nam's school is in the city. It has a big library, a gym and a garden. Nam has English on Mondays, Wednesdays and Fridays. His favourite subject is Science because he wants to be a scientist. Last Saturday was sports day. Nam played badminton and his team won. After that, he and his friends took a lot of photos.",
+      qs: `
+There is a gym at Nam's school.|T
+When does Nam have English?|On Mondays, Wednesdays and Fridays|On Tuesdays and Thursdays|Every day|On Saturdays
+Why does Nam like Science?|Because he wants to be a scientist.|Because it is easy.|Because he likes his teacher.|Because he likes animals.
+Nam's team lost the badminton match.|F`
+    },
+    {
+      units: [11, 15], kind: "read", title: "Hoa's family",
+      text: "Hoa lives in a house on Tran Hung Dao Street. The street is quiet and beautiful. Her father is a driver. He is tall and strong. Her mother is a nurse and she works in a hospital. At the weekend, Hoa's family is very busy. Her mother goes shopping at the supermarket, her father cleans the floor and Hoa waters the flowers. On Sunday evening, they watch a film at the cinema.",
+      qs: `
+Hoa's street is noisy.|F
+What does Hoa's father do?|He's a driver.|He's a nurse.|He's a farmer.|He's a doctor.
+Where does Hoa's mother work?|In a hospital|In a factory|In a school|On a farm
+Hoa waters the flowers at the weekend.|T`
+    },
+    {
+      units: [16, 20], kind: "read", title: "A day at the zoo",
+      text: "Yesterday was sunny and warm, so Tom and his sister went to the zoo. The zoo is opposite the shopping centre. Before the trip, Tom bought a new T-shirt. It was 80,000 dong. At the zoo, they saw elephants, giraffes and monkeys. Tom likes monkeys because they can swing and climb. His sister likes giraffes because they have long necks.",
+      qs: `
+The weather was rainy yesterday.|F
+Where is the zoo?|Opposite the shopping centre|Next to the bakery|Behind the cinema|Near the post office
+How much was Tom's T-shirt?|80,000 dong|18,000 dong|8,000 dong|800,000 dong
+Why does Tom's sister like giraffes?|Because they have long necks.|Because they can swing.|Because they can climb.|Because they are small.`
     }
   ]
 };
